@@ -97,9 +97,9 @@ def sortTeams(tanks):
         team2 - enemy team
     """
     for tank in tanks:
-        if tank['team']==1:
+        if tank['team'] == 1:
             team1.append(tank)
-        elif tank['team']==2:
+        elif tank['team'] == 2:
             team2.append(tank)
         else:
             raise TypeError
@@ -115,7 +115,7 @@ def countTeamHP (team, tankList):
     """
     teamHealth = 0
     for val in tankList:
-        if val['team']==team:
+        if val['team'] == team:
             teamHealth += val['tankHP']
     return teamHealth
 
@@ -130,7 +130,7 @@ def countTeamDMG(team, tankList):
 
     totalDamage = 0
     for val in tankList:
-        if val['team']==team:
+        if val['team'] == team:
             totalDamage += val['damageMax']
     return totalDamage
 
@@ -149,16 +149,14 @@ def startKilling (team1Temp, team2Temp):
     """
 
     # Heads up that we want to inflict more damage than enemy has HP
-    if countTeamDMG(1,tanks) > countTeamHP(2, tanks):
+    if countTeamDMG(1, tanks) > countTeamHP(2, tanks):
         print "We want to inflict more damage than enemy team has HP"
-    elif countTeamDMG(1,tanks) < countTeamHP(2, tanks):
+    elif countTeamDMG(1, tanks) < countTeamHP(2, tanks):
         print "Enemy team will win"
     else:pass
     print
     team1 = team1Temp
     team2 = team2Temp
-
-    i=1
 
     # Show team stats before battle
     print "Enemy total HP Before Battle - ", countTeamHP(2, team2)
@@ -169,19 +167,19 @@ def startKilling (team1Temp, team2Temp):
         print
         for tank2 in team2:
             print tank1['name'], " fights ", tank2['name']
-            if tank2['tankHP']<=0:
+            if tank2['tankHP'] <= 0:
                 # This tank is already dead - do nothing and proceed
                 print "This tank is already killed"
             elif tank2['damageMax'] == 0:
                 # Tank has no more damage left to inflict - do nothing, break and proceed to another tank from team 1
                 print "Tank has finished his damage infliction. Moving on to next tank in queue"
                 break
-            elif tank1['damageMax'] >= tank2['tankHP'] and tank2['tankHP']!=0:
+            elif tank1['damageMax'] >= tank2['tankHP'] and tank2['tankHP'] != 0:
                 # tank1 shoots and inflicts (tank1['damageMax'] - tank2['tankHP']) damage to tank2
                 print tank1['name'], " shoots and kills ", tank2['name']
                 tank1['damageMax'] = tank1['damageMax'] - tank2['tankHP']
                 tank2['tankHP'] = 0
-            elif tank1['damageMax'] < tank2['tankHP'] and tank1['damageMax']!=0:
+            elif tank1['damageMax'] < tank2['tankHP'] and tank1['damageMax'] != 0:
                 # tank1 shoots and inflicts ( tank2['tankHP'] - tank1['damageMax'] ) damage to tank2
                 print tank1['name'], " shoots ", tank2['name']
                 tank2['tankHP'] = tank2['tankHP'] - tank1['damageMax']
@@ -191,7 +189,6 @@ def startKilling (team1Temp, team2Temp):
             else:
                 # You shouldn't get here
                 print "Exception"
-            i += 1
 
 
     print
@@ -208,4 +205,4 @@ def startKilling (team1Temp, team2Temp):
 
 sortTeams(tanks)
 
-startKilling (team1, team2)
+startKilling(team1, team2)

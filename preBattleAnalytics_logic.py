@@ -26,12 +26,12 @@ def returnErrorName(x):
     """
 
     return {
-        0 : 'OK',
-        1 : 'ERROR_TOO_MUCH_DAMAGE',
-        2 : 'ERROR_DEAD_ENEMY',
-        3 : 'ERROR_MIN_MAX_DMG',
-        4 : 'ERROR_PLACE_REQUIRED',
-        5 : 'ERROR_MISC'
+        RESULT_STATUS_CODE.OK : 'OK',
+        RESULT_STATUS_CODE.ERROR_TOO_MUCH_DAMAGE : 'ERROR_TOO_MUCH_DAMAGE',
+        RESULT_STATUS_CODE.ERROR_DEAD_ENEMY : 'ERROR_DEAD_ENEMY',
+        RESULT_STATUS_CODE.ERROR_MIN_MAX_DMG : 'ERROR_MIN_MAX_DMG',
+        RESULT_STATUS_CODE.ERROR_PLACE_REQUIRED : 'ERROR_PLACE_REQUIRED',
+        RESULT_STATUS_CODE.ERROR_MISC : 'ERROR_MISC'
     }[x]
 
 
@@ -115,7 +115,6 @@ TANK_INPUT = [
 
     }
 ]
-
 
 def countTeamSize(team, tankList):
     """Counts amount of tanks in a requested team.
@@ -204,42 +203,42 @@ def validateInputData(tank, tankInput):
     # Checks if enemy team has any HP at the beginning of match
     enemyHP = countTeamHP(2, tankInput)
     if (enemyHP <= 0):
-        return RESULT_STATUS_CODE().ERROR_DEAD_ENEMY
+        return RESULT_STATUS_CODE.ERROR_DEAD_ENEMY
 
     # Checks if a team is asked to inflict more damage than enemy has Health Points
     if (countTeamHP(2, tankInput) <= countTeamMaxDMG(1, tankInput)):
-        return RESULT_STATUS_CODE().ERROR_TOO_MUCH_DAMAGE
+        return RESULT_STATUS_CODE.ERROR_TOO_MUCH_DAMAGE
 
     # Ensures that Minimum is smaller than Maximum damage
     damageMin = tank['damageMin']
     damageMax = tank['damageMax']
     if ((damageMin > damageMax)):
-        return RESULT_STATUS_CODE().ERROR_MIN_MAX_DMG
+        return RESULT_STATUS_CODE.ERROR_MIN_MAX_DMG
 
     # Ensures that placeRequired is not out of bounds of team size
     placeRequired = tank['placeRequired']
     teamSize = countTeamSize(2, tankInput)
     if (placeRequired > teamSize):
-        return RESULT_STATUS_CODE().ERROR_PLACE_REQUIRED
+        return RESULT_STATUS_CODE.ERROR_PLACE_REQUIRED
 
     # Run tests if tank can inflict requested damage and get requested place in battle Rating
     if (placeRequired == 1):
         if (damageMax < enemyHP):
-            return RESULT_STATUS_CODE().OK
+            return RESULT_STATUS_CODE.OK
         elif ((damageMax == enemyHP or damageMin == enemyHP)):
-            return RESULT_STATUS_CODE().OK
+            return RESULT_STATUS_CODE.OK
         elif (damageMax > enemyHP or damageMin > enemyHP):
-            return RESULT_STATUS_CODE().ERROR_TOO_MUCH_DAMAGE
+            return RESULT_STATUS_CODE.ERROR_TOO_MUCH_DAMAGE
         else:
-            return RESULT_STATUS_CODE().ERROR_MISC
+            return RESULT_STATUS_CODE.ERROR_MISC
     elif (1 < placeRequired <= teamSize):
         damageSim = (damageMax * placeRequired) + ((placeRequired - 1) * (placeRequired) / 2)
         if (damageSim <= enemyHP):
             return RESULT_STATUS_CODE.OK
         else:
-            return RESULT_STATUS_CODE().ERROR_TOO_MUCH_DAMAGE
+            return RESULT_STATUS_CODE.ERROR_TOO_MUCH_DAMAGE
     else:
-        return RESULT_STATUS_CODE().ERROR_MISC
+        return RESULT_STATUS_CODE.ERROR_MISC
 
 
 
